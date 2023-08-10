@@ -39,10 +39,11 @@
         
 }
 
-
-.complete:hover {
+@media screen and (min-width: 1000px){
+    .complete:hover {
 
     border-color:hsla(280, 87%, 65%, 0.5);
-    
-
 }
+}
+
+

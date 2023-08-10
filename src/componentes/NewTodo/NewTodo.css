@@ -1,0 +1,16 @@
+.new-input {
+    margin: 30px 0 15px 0;
+}
+
+.new-input > input {
+    border: none;
+    font-family: 'Josefin Sans';
+   outline: none;
+   font-size: 14px;
+   color: hsl(233, 11%, 84%);
+    background: transparent;
+}
+
+.new-input > input::placeholder {
+    color: hsl(234, 11%, 52%);
+}

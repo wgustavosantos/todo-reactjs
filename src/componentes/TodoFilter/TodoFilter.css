@@ -1,0 +1,26 @@
+.todo-filter {
+    justify-content: center;
+    margin-top: 15px;
+    padding: 0;
+}
+
+.todo-filter > button {
+    height: 45px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Josefin Sans';
+    outline: none;
+    font-size: 14px;
+    background: transparent;
+    transition: color 0.3s ease-in-out;
+}
+
+.todo-filter > button:hover {
+    color: hsl(220, 98%, 61%);
+}
+
+.active {
+    color: hsl(220, 98%, 61%);
+}
+
+

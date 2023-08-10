@@ -2,7 +2,7 @@ import './Todo.css'
 
 const Todo = ({ todo, removeTodo, completeTodo }) => {
 
-    const backgroundCompleted = 'url(/src/assets/img/icon-check.svg), linear-gradient(to right, hsl(192, 100%, 67%), hsl(280, 87%, 65%))';
+    const backgroundCompleted = 'url("/src/assets/img/icon-check.svg"), linear-gradient(to right, hsl(192, 100%, 67%), hsl(280, 87%, 65%))';
 
     return (
         <div className='todo'>

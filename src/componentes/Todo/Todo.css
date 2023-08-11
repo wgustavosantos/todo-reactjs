@@ -9,6 +9,7 @@
     font-weight: 400;
     font-size: 14px;
     color: hsl(233, 11%, 84%);
+    cursor: pointer;
 }
 
 .remove, .complete {

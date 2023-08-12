@@ -50,7 +50,7 @@ const TodoForm = () => {
     //     isCompleted: false
     // }]
     
-    let listaTodos = JSON.parse(localStorage.getItem('todos'))
+    let listaTodos = JSON.parse(localStorage.getItem('todos') || [])
     
     const [todos, setTodos] = useState(listaTodos
        

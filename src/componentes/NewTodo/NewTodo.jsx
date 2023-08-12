@@ -13,7 +13,6 @@ const NewTodo = ({todosState}) => {
             text: input,
             isCompleted: false
         }
-
           setTodos([todo, ...todos]);
           setInput('')
           document.activeElement.blur();

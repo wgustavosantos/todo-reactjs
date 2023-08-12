@@ -1,9 +1,0 @@
-.background-image > img {
-    width: 100%;
-}
-
-@media (min-width: 1000px) {
-    .background-image img {
-      content: url('../../assets/img/bg-desktop-dark.jpg');
-    }
-  }

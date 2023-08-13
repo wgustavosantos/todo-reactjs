@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef} from 'react';
 import './TodoForm.css'
 import NewTodo from '../NewTodo/NewTodo';
 import TodoInfo from '../TodoInfo/TodoInfo';
 import TodoFilter from '../TodoFilter/TodoFilter'
 import { SortableItem } from '../SortableItems/SortableItems';
+import { v4 as uuidv4 } from "uuid";
 
 import {
     DndContext,
@@ -19,45 +20,35 @@ import {
 
 const TodoForm = () => {
 
-    // const todosArray =  [{
-    //     id: uuidv4(),
-    //     text: 'Estudar Dor Pélvica Crônica',
-    //     isCompleted: false
-    // },
-    // {
-    //     id: uuidv4(),
-    //     text: 'Revisar Incontinência Urinária e Disfunções Pélvicas',
-    //     isCompleted: false
-    // },
-    // {
-    //     id: uuidv4(),
-    //     text: 'Assistir 2 aulas do curso Gestão da Dor no Câncer Ginecológico',
-    //     isCompleted: false
-    // },
-    // {
-    //     id: uuidv4(),
-    //     text: 'Revisar Neuromodulação',
-    //     isCompleted: false
-    // },
-    // {
-    //     id: uuidv4(),
-    //     text: 'Flashcard sobre Biofeedback e Eletromiografia',
-    //     isCompleted: false
-    // },
-    // {
-    //     id: uuidv4(),
-    //     text: 'Flashcard sobre Fibromialgia',
-    //     isCompleted: false
-    // }]
-    
-    let listaTodos = JSON.parse(localStorage.getItem('todos') || [])
-    
-    const [todos, setTodos] = useState(listaTodos
-       
-    )
 
-    localStorage.setItem('todos', JSON.stringify(todos))
     const [filter, setFilter] = useState("All")
+    const [todos, setTodos] = useState([]);
+    let shouldlog = useRef(true);
+
+
+    useEffect(() => {
+        const storedTodos = JSON.parse(localStorage.getItem('todos'));
+
+        if (shouldlog.current) {
+            shouldlog.current = false;
+           if (storedTodos) {
+
+            setTodos(storedTodos)
+        } 
+            }
+
+        
+    }, []);
+
+
+    
+
+    useEffect(() => {
+        localStorage.setItem('todos', JSON.stringify(todos));
+        console.log('mostrando o state todos após inseridos os dados');
+    console.log(todos);
+    }, [todos]);
+
 
     let countTodo = 0;
 
@@ -130,3 +121,35 @@ const TodoForm = () => {
 }
 
 export default TodoForm;
+
+
+// {
+        //     id: uuidv4(),
+        //     text: 'Estudar Dor Pélvica Crônica',
+        //     isCompleted: false
+        // },
+        // {
+        //     id: uuidv4(),
+        //     text: 'Revisar Incontinência Urinária e Disfunções Pélvicas',
+        //     isCompleted: false
+        // },
+        // {
+        //     id: uuidv4(),
+        //     text: 'Assistir 2 aulas do curso Gestão da Dor no Câncer Ginecológico',
+        //     isCompleted: false
+        // },
+        // {
+        //     id: uuidv4(),
+        //     text: 'Revisar Neuromodulação',
+        //     isCompleted: false
+        // },
+        // {
+        //     id: uuidv4(),
+        //     text: 'Flashcard sobre Biofeedback e Eletromiografia',
+        //     isCompleted: false
+        // },
+        // {
+        //     id: uuidv4(),
+        //     text: 'Flashcard sobre Fibromialgia',
+        //     isCompleted: false
+        // }

@@ -1,6 +1,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from '@dnd-kit/utilities';
-import Todo from "../Todo/Todo";
+import {Todo} from "../Todo/Todo";
 
 export function SortableItem({ id, todo, index, completeTodo, removeTodo, todos, filter }) {
 

@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef} from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './TodoForm.css'
 import NewTodo from '../NewTodo/NewTodo';
+import { TodoEdit } from '../Todo/Todo';
 import TodoInfo from '../TodoInfo/TodoInfo';
 import TodoFilter from '../TodoFilter/TodoFilter'
 import { SortableItem } from '../SortableItems/SortableItems';
-import { v4 as uuidv4 } from "uuid";
+import { CSSTransition } from 'react-transition-group';
 
 import {
     DndContext,
@@ -23,34 +24,30 @@ const TodoForm = () => {
 
     const [filter, setFilter] = useState("All")
     const [todos, setTodos] = useState([]);
+    const [modalActive, setModalActive] = useState(false);
+    const [todo, setTodo] = useState(null)
+    const [blurBackground, setBlurBackground] = useState(false);
+
+
     let shouldlog = useRef(true);
-
-
+    let countTodo = 0;
+    let itemTodo;
+    let indexTodo;
     useEffect(() => {
         const storedTodos = JSON.parse(localStorage.getItem('todos'));
 
         if (shouldlog.current) {
             shouldlog.current = false;
-           if (storedTodos) {
+            if (storedTodos) {
 
-            setTodos(storedTodos)
-        } 
+                setTodos(storedTodos)
             }
-
-        
+        }
     }, []);
-
-
-    
 
     useEffect(() => {
         localStorage.setItem('todos', JSON.stringify(todos));
-        console.log('mostrando o state todos após inseridos os dados');
-    console.log(todos);
     }, [todos]);
-
-
-    let countTodo = 0;
 
     function removeTodo(id) {
         setTodos(todos.filter((todo) => { return todo.id != id }))
@@ -68,6 +65,12 @@ const TodoForm = () => {
         setTodos(todos.filter((todo) => !todo.isCompleted))
     }
 
+    function editTodo(todo) {
+        setTodo(todo);
+        setModalActive((prevModalActive) => !prevModalActive);
+    }
+
+    console.log("todos")
     function handleDragEnd(event) {
         if (event.delta.x === 0) {
             if (event.active.id === event.over.id) {
@@ -77,6 +80,14 @@ const TodoForm = () => {
 
                 if (event.activatorEvent.target.className === 'remove') {
                     removeTodo(event.active.id)
+                }
+
+                if (event.activatorEvent.target.parentNode.className === 'todo-edit__icon') {
+
+                    const todoFound = todos.find((todo) => todo.id === event.active.id)
+                    itemTodo = todoFound;
+
+                    editTodo(todoFound);
                 }
             }
         }
@@ -100,7 +111,6 @@ const TodoForm = () => {
                     collisionDetection={closestCenter}
 
                     onDragEnd={handleDragEnd}
-                // sensors={sensors}
                 >
                     <SortableContext
                         items={todos}
@@ -112,8 +122,17 @@ const TodoForm = () => {
                                 return <SortableItem filter={filter} todos={todos} completeTodo={completeTodo} removeTodo={removeTodo} key={todo.id} id={todo.id} todo={todo} />
                             })}
                     </SortableContext>
-                </DndContext></div>
+                </DndContext>
+            </div>
 
+            <CSSTransition
+                in={modalActive}
+                timeout={300}
+                classNames='modal'
+                unmountOnExit
+            >
+                <TodoEdit todo={todo} todosState={[todos, setTodos]} modalActiveState={[modalActive, setModalActive]} />
+            </CSSTransition>
             <TodoInfo countTodo={countTodo} removeCompleted={removeCompleted} />
             <TodoFilter setFilter={setFilter} />
         </div>

@@ -6,7 +6,7 @@ import TodoInfo from '../TodoInfo/TodoInfo';
 import TodoFilter from '../TodoFilter/TodoFilter'
 import { SortableItem } from '../SortableItems/SortableItems';
 import { CSSTransition } from 'react-transition-group';
-
+import React from 'react'
 import {
     DndContext,
     closestCenter
@@ -26,13 +26,13 @@ const TodoForm = () => {
     const [todos, setTodos] = useState([]);
     const [modalActive, setModalActive] = useState(false);
     const [todo, setTodo] = useState(null)
-    const [blurBackground, setBlurBackground] = useState(false);
-
-
     let shouldlog = useRef(true);
+    const childRef = React.useRef(null) // issue CSSTransition using findDOMNode which is deprecated in React 16.13.1 # 668
+
     let countTodo = 0;
     let itemTodo;
-    let indexTodo;
+
+
     useEffect(() => {
         const storedTodos = JSON.parse(localStorage.getItem('todos'));
 
@@ -48,6 +48,23 @@ const TodoForm = () => {
     useEffect(() => {
         localStorage.setItem('todos', JSON.stringify(todos));
     }, [todos]);
+
+    useEffect(() => {
+        if (modalActive) {
+
+            const closeOnOutsideClick = (event) => {
+                if (event.target.className === 'modal-overlay') {
+                    setModalActive(false);
+                }
+            };
+
+            document.addEventListener('click', closeOnOutsideClick);
+
+            return () => {
+                document.removeEventListener('click', closeOnOutsideClick);
+            };
+        }
+    }, [modalActive]);
 
     function removeTodo(id) {
         setTodos(todos.filter((todo) => { return todo.id != id }))
@@ -70,7 +87,6 @@ const TodoForm = () => {
         setModalActive((prevModalActive) => !prevModalActive);
     }
 
-    console.log("todos")
     function handleDragEnd(event) {
         if (event.delta.x === 0) {
             if (event.active.id === event.over.id) {
@@ -78,11 +94,11 @@ const TodoForm = () => {
                     completeTodo(event.active.id)
                 }
 
-                if (event.activatorEvent.target.className === 'remove') {
+                if (event.activatorEvent.target.id === 'remove-todo') {
                     removeTodo(event.active.id)
                 }
 
-                if (event.activatorEvent.target.parentNode.className === 'todo-edit__icon') {
+                if (event.activatorEvent.target.id === 'edit-todo') {
 
                     const todoFound = todos.find((todo) => todo.id === event.active.id)
                     itemTodo = todoFound;
@@ -124,15 +140,19 @@ const TodoForm = () => {
                     </SortableContext>
                 </DndContext>
             </div>
+            <div className='modal-overlay'>
+                <CSSTransition
+                    in={modalActive}
+                    timeout={300}
+                    classNames='modal'
+                    unmountOnExit
+                    nodeRef={childRef}
 
-            <CSSTransition
-                in={modalActive}
-                timeout={300}
-                classNames='modal'
-                unmountOnExit
-            >
-                <TodoEdit todo={todo} todosState={[todos, setTodos]} modalActiveState={[modalActive, setModalActive]} />
-            </CSSTransition>
+                >
+                    <TodoEdit todo={todo} todosState={[todos, setTodos]} modalActiveState={[modalActive, setModalActive]} />
+                </CSSTransition>
+            </div>
+
             <TodoInfo countTodo={countTodo} removeCompleted={removeCompleted} />
             <TodoFilter setFilter={setFilter} />
         </div>

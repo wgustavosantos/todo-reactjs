@@ -3,7 +3,7 @@ import iconCheckSvg from '../../assets/img/icon-check.svg';
 import { FiEdit2 } from 'react-icons/fi';
 import { useState } from 'react';
 import {BsCheck2} from 'react-icons/bs'
-import {GrFormClose} from 'react-icons/gr'
+import {MdEditNote} from 'react-icons/md'
 import {IoMdClose} from 'react-icons/io'
 
 export const Todo = ({ todo, removeTodo, completeTodo }) => {
@@ -24,8 +24,13 @@ export const Todo = ({ todo, removeTodo, completeTodo }) => {
                     }}>
                 {todo.text}
             </p>
-            <div className='todo-edit__icon'><FiEdit2/></div>
-            <button onClick={() => removeTodo(todo.id)} className='remove'></button>
+            {/* <div className='todo-edit__icon'><FiEdit2 size={22}/></div> */}
+            {/* <button onClick={() => removeTodo(todo.id)} className='remove'></button> */}
+            {/* <IoMdClose onClick={() => removeTodo(todo.id)} size={30}/> */}
+            <div className='todo-edit__button todo-edit__icon'>
+                <MdEditNote id='edit-todo'  size={25}/>
+                <IoMdClose id='remove-todo' size={25}/>
+            </div>
 
         </div>
     )

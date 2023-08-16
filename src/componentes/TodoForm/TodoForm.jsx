@@ -50,21 +50,21 @@ const TodoForm = () => {
     }, [todos]);
 
     useEffect(() => {
-        if (modalActive) {
+    if (modalActive) {
+        
+        const closeOnOutsideClick = (event) => {
+            if (event.target.parentNode.className !== 'modal-overlay' && event.target.parentNode.id !== 'modal-overlay') {
+                setModalActive(false);
+            }
+        };
 
-            const closeOnOutsideClick = (event) => {
-                if (event.target.className === 'modal-overlay') {
-                    setModalActive(false);
-                }
-            };
-
-            document.addEventListener('click', closeOnOutsideClick);
-
-            return () => {
-                document.removeEventListener('click', closeOnOutsideClick);
-            };
-        }
-    }, [modalActive]);
+        document.addEventListener('click', closeOnOutsideClick);
+       
+        return () => {
+            document.removeEventListener('click', closeOnOutsideClick);
+        };
+    }
+}, [modalActive]);
 
     function removeTodo(id) {
         setTodos(todos.filter((todo) => { return todo.id != id }))
@@ -84,11 +84,12 @@ const TodoForm = () => {
 
     function editTodo(todo) {
         setTodo(todo);
-        setModalActive((prevModalActive) => !prevModalActive);
+        // setModalActive((prevModalActive) => !prevModalActive);
+        setModalActive(!modalActive)
     }
 
     function handleDragEnd(event) {
-        if (event.delta.x === 0) {
+        if (event.delta.x === 0 && event.over != null) {
             if (event.active.id === event.over.id) {
                 if (event.activatorEvent.target.className === 'complete' || event.activatorEvent.target.nodeName === 'P') {
                     completeTodo(event.active.id)
@@ -105,6 +106,8 @@ const TodoForm = () => {
 
                     editTodo(todoFound);
                 }
+
+                if(modalActive) setModalActive(!modalActive)
             }
         }
 
@@ -140,18 +143,20 @@ const TodoForm = () => {
                     </SortableContext>
                 </DndContext>
             </div>
-            <div className='modal-overlay'>
+            
                 <CSSTransition
                     in={modalActive}
                     timeout={300}
                     classNames='modal'
                     unmountOnExit
-                    nodeRef={childRef}
+                    // nodeRef={childRef}
 
                 >
+                    <div className='modal-overlay'>  
                     <TodoEdit todo={todo} todosState={[todos, setTodos]} modalActiveState={[modalActive, setModalActive]} />
+                  </div>
                 </CSSTransition>
-            </div>
+           
 
             <TodoInfo countTodo={countTodo} removeCompleted={removeCompleted} />
             <TodoFilter setFilter={setFilter} />

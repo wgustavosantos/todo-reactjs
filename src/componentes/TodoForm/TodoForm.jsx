@@ -28,7 +28,6 @@ const TodoForm = () => {
     const [todo, setTodo] = useState(null)
     let shouldlog = useRef(true);
     const childRef = React.useRef(null) // issue CSSTransition using findDOMNode which is deprecated in React 16.13.1 # 668
-
     let countTodo = 0;
     let itemTodo;
 
@@ -89,6 +88,7 @@ const TodoForm = () => {
     }
 
     function handleDragEnd(event) {
+        console.log(event)
         if (event.delta.x === 0 && event.over != null) {
             if (event.active.id === event.over.id) {
                 if (event.activatorEvent.target.className === 'complete' || event.activatorEvent.target.nodeName === 'P') {
@@ -99,7 +99,7 @@ const TodoForm = () => {
                     removeTodo(event.active.id)
                 }
 
-                if (event.activatorEvent.target.id === 'edit-todo') {
+                if (event.activatorEvent.target.id === 'edit-todo' || event.activatorEvent.target.parentNode.id === 'edit-todo') {
 
                     const todoFound = todos.find((todo) => todo.id === event.active.id)
                     itemTodo = todoFound;

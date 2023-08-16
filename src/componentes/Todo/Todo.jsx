@@ -1,6 +1,5 @@
 import './Todo.css'
 import iconCheckSvg from '../../assets/img/icon-check.svg';
-import { FiEdit2 } from 'react-icons/fi';
 import { useState } from 'react';
 import {BsCheck2} from 'react-icons/bs'
 import {MdEditNote} from 'react-icons/md'

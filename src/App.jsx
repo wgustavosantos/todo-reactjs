@@ -7,26 +7,27 @@ import { CSSTransition } from 'react-transition-group';
 
 function App() {
   const [showNotice, setShowNotice] = useState(false);
-
-  useEffect(() => {
-    // Mostrar o aviso após 3 segundos (3000 milissegundos)
-    setTimeout(() => {
-      setShowNotice(true);
-    }, 1000);
-  }, []);
-
-  useEffect(() => {
-    // Remover o aviso após 3 segundos (3000 milissegundos)
-    setTimeout(() => {
-      setShowNotice(false);
-    }, 3000);
-  }, [showNotice]);
+  const storedTodos = JSON.parse(localStorage.getItem('todos'));
 
 
-  const handleExit = () => {
-    setShowNotice(false);
-  };
-  
+  if (!storedTodos || storedTodos.length === 0) {
+
+    useEffect(() => {
+      // Mostrar o aviso após 3 segundos (3000 milissegundos)
+      setTimeout(() => {
+        setShowNotice(true);
+      }, 1000);
+    }, []);
+
+    useEffect(() => {
+      // Remover o aviso após 3 segundos (3000 milissegundos)
+      setTimeout(() => {
+        setShowNotice(false);
+      }, 3000);
+    }, [showNotice]);
+  }
+
+
   return (
     <div className='app'>
       <BackgroundImage />
@@ -41,9 +42,8 @@ function App() {
           exitActive: 'notice-exit-active',
         }}
         unmountOnExit
-        onExited={handleExit}
       >
-        <div className='notice' onClick={()=>setShowNotice(false)}>
+        <div className='notice' onClick={() => setShowNotice(false)}>
           Arraste e solte os itens para reordenar a lista.
         </div>
       </CSSTransition>

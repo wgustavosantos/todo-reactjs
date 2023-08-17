@@ -10,22 +10,26 @@ function App() {
   const storedTodos = JSON.parse(localStorage.getItem('todos'));
 
 
-  if (!storedTodos || storedTodos.length === 0) {
 
-    useEffect(() => {
-      // Mostrar o aviso após 3 segundos (3000 milissegundos)
+
+  useEffect(() => {
+    // Mostrar o aviso após 3 segundos (3000 milissegundos)
+    if (!storedTodos || storedTodos.length === 0) {
       setTimeout(() => {
         setShowNotice(true);
       }, 1000);
-    }, []);
+    }
 
-    useEffect(() => {
-      // Remover o aviso após 3 segundos (3000 milissegundos)
-      setTimeout(() => {
-        setShowNotice(false);
-      }, 3000);
-    }, [showNotice]);
-  }
+
+  }, []);
+
+  useEffect(() => {
+    // Remover o aviso após 3 segundos (3000 milissegundos)
+    setTimeout(() => {
+      setShowNotice(false);
+    }, 4000);
+  }, [showNotice]);
+
 
 
   return (

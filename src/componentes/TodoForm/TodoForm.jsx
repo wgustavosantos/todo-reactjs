@@ -7,6 +7,8 @@ import TodoFilter from '../TodoFilter/TodoFilter'
 import { SortableItem } from '../SortableItems/SortableItems';
 import { CSSTransition } from 'react-transition-group';
 import React from 'react'
+import { v4 as uuidv4 } from "uuid";
+
 import {
     DndContext,
     closestCenter
@@ -21,9 +23,40 @@ import {
 
 const TodoForm = () => {
 
+    const lista  =  [{
+        id: uuidv4(),
+        text: 'Estudar html, css, js',
+        isCompleted: true
+    },
+    {
+        id: uuidv4(),
+        text: 'Estudar Javascript e sua sintaxe',
+        isCompleted: true
+    },
+    {
+        id: uuidv4(),
+        text: 'Estudar React e seus principais hooks',
+        isCompleted: true
+    },
+    {
+        id: uuidv4(),
+        text: 'Criar um ToDo App',
+        isCompleted: true
+    },
+    {
+        id: uuidv4(),
+        text: 'Salvamento no storage local',
+        isCompleted: true
+    },
+    {
+        id: uuidv4(),
+        text: 'Criar drag and drop',
+        isCompleted: true
+    }]
+
 
     const [filter, setFilter] = useState("All")
-    const [todos, setTodos] = useState([]);
+    const [todos, setTodos] = useState((JSON.parse(localStorage.getItem('todos')) || lista));
     const [modalActive, setModalActive] = useState(false);
     const [todo, setTodo] = useState(null)
     let shouldlog = useRef(true);
@@ -34,13 +67,20 @@ const TodoForm = () => {
 
     useEffect(() => {
         const storedTodos = JSON.parse(localStorage.getItem('todos'));
-
+        
         if (shouldlog.current) {
             shouldlog.current = false;
             if (storedTodos) {
 
+                    // if(storedTodos.length === 0){
+                    //     setTodos(lista)
+                    //     return
+                    // }
+                
                 setTodos(storedTodos)
             }
+
+            
         }
     }, []);
 
@@ -167,33 +207,4 @@ const TodoForm = () => {
 export default TodoForm;
 
 
-// {
-        //     id: uuidv4(),
-        //     text: 'Estudar Dor Pélvica Crônica',
-        //     isCompleted: false
-        // },
-        // {
-        //     id: uuidv4(),
-        //     text: 'Revisar Incontinência Urinária e Disfunções Pélvicas',
-        //     isCompleted: false
-        // },
-        // {
-        //     id: uuidv4(),
-        //     text: 'Assistir 2 aulas do curso Gestão da Dor no Câncer Ginecológico',
-        //     isCompleted: false
-        // },
-        // {
-        //     id: uuidv4(),
-        //     text: 'Revisar Neuromodulação',
-        //     isCompleted: false
-        // },
-        // {
-        //     id: uuidv4(),
-        //     text: 'Flashcard sobre Biofeedback e Eletromiografia',
-        //     isCompleted: false
-        // },
-        // {
-        //     id: uuidv4(),
-        //     text: 'Flashcard sobre Fibromialgia',
-        //     isCompleted: false
-        // }
+       

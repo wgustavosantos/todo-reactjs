@@ -9,7 +9,13 @@
 
 .todo-info > button {
     background: transparent;
+    cursor: pointer;
     border: none;
+
+}
+
+.todo-info > button:hover {
+    color: hsl(220, 98%, 61%);
 
 }
 

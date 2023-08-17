@@ -5,6 +5,7 @@ const TodoInfo = ({countTodo, removeCompleted}) => {
         <div className="todo-info todo">
             <p>{countTodo} items left</p>
             <button onClick={removeCompleted}>Clear Completed</button>
+            
         </div>
     )
 }
